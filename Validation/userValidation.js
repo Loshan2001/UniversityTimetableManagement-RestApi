@@ -9,5 +9,15 @@ const registerValidation = (data)=>{
    return  Joi.validate(data,schema)
 }
 
+const loginValidation = (data)=>{
+    const schema = {
+         
+        email : Joi.string().min(8).max(355).required().email(),
+        password : Joi.string().min(8).max(50).required()
+    }
+   return  Joi.validate(data,schema)
+}
+
 
 module.exports.registerValidation = registerValidation
+module.exports.loginValidation = loginValidation
