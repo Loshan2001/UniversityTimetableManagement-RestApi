@@ -4,11 +4,12 @@ const registerValidation = (data)=>{
     const schema = {
         name : Joi.string().min(5).max(100).required(),
         email : Joi.string().min(8).max(355).required().email(),
-        password : Joi.string().min(8).max(50).required()
+        password : Joi.string().min(8).max(50).required(),
+        role : Joi.string().required()
     }
    return  Joi.validate(data,schema)
 }
-
+//Login validation
 const loginValidation = (data)=>{
     const schema = {
          
