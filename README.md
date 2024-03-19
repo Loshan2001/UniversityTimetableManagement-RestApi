@@ -17,4 +17,10 @@
 
 2. admin and faculty can update,delete,view course details 
    i assign 3 faculties (CS , BS , EN) 
-   Faculties can only view, update, and delete courses that belong to them
+   Faculties can only view, update, and delete courses that belong to them 
+
+3. facutlty can reserve rooms for events,
+            Time Overlap Checking:
+            It specifically looks for two scenarios:
+                       => If the existing booking starts before your requested end time and ends after your      requested start time. This means there's an overlap.
+                       => If the existing booking starts and ends exactly at the same time as your requested booking. This also indicates an overlap.
