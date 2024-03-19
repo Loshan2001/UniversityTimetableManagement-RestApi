@@ -25,7 +25,11 @@ router.post('/register',async(req,res)=>{
         name : req.body.name,
         email : req.body.email,
         password : hashPassword,
-        role : req.body.role
+        role : req.body.role,
+        f_Code : req.body.f_Code,
+        year : req.body.year,
+        semester : req.body.semester,
+        totalRooms : req.body.totalRooms
     })
    try{
         
@@ -53,8 +57,9 @@ router.post('/login',async(req,res)=>{
 
     //create and assign a tokken 
     const token  = jwt.sign({_id : user._id},process.env.TOKEN_SECRET)
-    res.header('auth_token',token)
+    res.header('auth-token',token)
     res.send("Success! You are logged in");
+    
 });
 
 

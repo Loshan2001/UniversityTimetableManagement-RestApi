@@ -22,7 +22,38 @@ const userSchema = new mongoose.Schema({
     },
     role : {
         type : String,
+        enum: ['student', 'admin', 'staff', 'faculty'],
         required : true
+    },
+
+    //role specification 
+    year : {
+        type :String,
+        default : null,
+        required : function (){
+            return this.role === 'student'
+        }
+    },
+    semester : {
+        type : String,
+        default : null,
+        required : function (){
+            return this.role === 'student'
+        }
+    },
+    f_Code :{
+        type : String,
+        default : null,
+        required : function (){
+            return this.role === 'faculty'
+        }
+    },
+    totalRooms :{
+        type : Number,
+        default : null,
+        required : function (){
+            return this.role === 'faculty'
+        }
     },
     date : {
         type : Date,
