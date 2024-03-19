@@ -75,5 +75,34 @@ router.post('/reserve',verify,async(req,res)=>{
     }
 })
 
+router.delete('/unreserve/:roomId', verify, async (req, res) => {
+    // First validate faculty
+    if (req.user.role !== 'faculty')
+        return res.status(401).json({ message: 'Forbidden. Only Faculty can unreserve rooms.' });
+
+    try {
+        // Find the room by its ID
+        const room = await Room.findById(req.params.roomId);
+
+        // If room not found, return error
+        if (!room) {
+            return res.status(404).json({ message: 'Room not found' });
+        }
+
+        // Check if the faculty user has the permission to unreserve this room
+        // For example, you may want to ensure that the user who reserved the room is the one unreserving it
+        if (room.bookings[0].faculty.toString() !== req.user.id) {
+            return res.status(403).json({ message: 'You are not authorized to unreserve this room' });
+        }
+
+        // Remove the room booking
+        await Room.findByIdAndDelete(req.params.roomId);
+
+        res.status(200).json({ message: 'Room unreserved successfully' });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
 
 module.exports = router
