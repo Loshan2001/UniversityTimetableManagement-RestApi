@@ -190,14 +190,14 @@ router.delete('/courseDelete/:id',verify,async(req,res)=>{
             return res.status(403).json({ message: `Forbidden. you are ${req.user.f_Code} department, You can only delete courses of your department. this course belongs to ${courseId.facultyCode } department` });
             } 
         }
-        
+
       try{ 
        // Find the course by ID and delete it
        const deletedCourse = await Course.findByIdAndDelete(req.params.id);
        res.status(200).json({ message: 'Course deleted successfully.', deletedCourse });
 
       }catch(err){
-        console.log(err)
+       
         res.status(500).json({ message: 'Internal Server Error' });
 
        }
@@ -252,7 +252,7 @@ router.get('/:id', verify, async (req, res) => {
 
         res.json(course);
     } catch (err) {
-        console.error(err);
+        
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });

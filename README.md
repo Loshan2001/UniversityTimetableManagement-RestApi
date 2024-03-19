@@ -15,3 +15,6 @@
 
                                 "EN3020"        "EN"        Engineering
 
+2. admin and faculty can update,delete,view course details 
+   i assign 3 faculties (CS , BS , EN) 
+   Faculties can only view, update, and delete courses that belong to them

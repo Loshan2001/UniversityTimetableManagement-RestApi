@@ -10,7 +10,7 @@ const registerValidation = (data)=>{
         semester : Joi.string().when('role',{is : 'student' , then : Joi.required()}),
         year : Joi.string().when('role',{is : 'student' , then : Joi.required()}),
         totalRooms : Joi.number().when('role',{is : 'faculty' , then : Joi.required()})
-    }
+    } 
    return  Joi.validate(data,schema)
 }
 //Login validation
