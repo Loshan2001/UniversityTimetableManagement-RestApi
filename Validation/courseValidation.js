@@ -6,7 +6,8 @@ const courseRegisterValidation = (data) =>{
         courseName : Joi.string().required(),
         description : Joi.string().required(),
         credits : Joi.number().required(),
-        faculty : Joi.string().optional()
+        faculty : Joi.string().optional(),
+        facultyCode : Joi.string().valid('CS', 'BS','EN').required()
 
     }
     return  Joi.validate(data,schema)

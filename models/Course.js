@@ -21,6 +21,11 @@ const courseSchema = new mongoose.Schema({
     faculty : {
         type : mongoose.Schema.ObjectId,
         ref : 'User'
+    },
+    facultyCode :{
+        type : String,
+        enum : ['CS' , 'BS' , 'EN'],
+        required : true
     }
 })
 
