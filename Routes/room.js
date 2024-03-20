@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const verify = require('../middleware/verifyToken')
 const Room = require('../models/Room')
+const TimeTable = require('../models/Timetable')
 const {roomReservationValidation} = require("../Validation/roomValidation")
 
 router.post('/reserve', verify, async (req, res) => {
@@ -43,6 +44,35 @@ router.post('/reserve', verify, async (req, res) => {
         if (existingBookings.length > 0) {
             return res.status(400).json({ message: 'One or more rooms are already booked at the specified time.' });
         }
+
+         // Check if any room is available or not at the specified time
+     const roomAvailble = await TimeTable.find({
+        roomCode:req.body.roomCode,
+        'description.date': date,
+        $or: [
+            {
+                $and: [
+                    { 'description.startTime': { $lt: endTime } },
+                    { 'description.endTime': { $gt: startTime } }
+                ]
+            },
+            {
+                $and: [
+                    { 'description.startTime': { $eq: startTime } },
+                    { 'description.endTime': { $eq: endTime } }
+                ]
+            }
+        ]
+    });
+  // If any room is already booked at the specified time, return an error
+    if (roomAvailble.length > 0) {
+        return res.status(400).json({ message: 'One or more rooms are already reserved for events at the specified time.' });
+    }
+
+
+
+
+
 
         // No rooms are booked at the specified time, proceed to reserve the room
         const room = new Room({

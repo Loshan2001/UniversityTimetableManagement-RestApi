@@ -1,10 +1,10 @@
 const mongoose = require('mongoose')
 const timeTableSchema = mongoose.Schema({
     courseCode : {
-        type : mongoose.SchemaTypes.ObjectId,
+        type : String,
         required : true,
     },
-    description :{
+    roomCode :{
         type : String,
         required : true
     },
@@ -16,17 +16,20 @@ const timeTableSchema = mongoose.Schema({
         type : String,
         required : true
     },
-    venue :{
+    description: [{
+        date: { 
+            type: Date, required: true
+              },
+        startTime: String,
+        endTime: String,
+        purpose: String,
+        facultyCode: {
+             type: String 
+            } 
+    }],
+    staff : {
         type : String,
-        required : true
-    },
-    date : {
-        type : Date,
-        required : true
-    },
-    time : {
-        type : String,
-        required : true
+        ref: 'User'
     }
 })
 

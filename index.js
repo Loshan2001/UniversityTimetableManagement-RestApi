@@ -7,7 +7,7 @@ const url = 'mongodb+srv://loshansp2001:Lo$h%40n200111@afbackend.nazhnpm.mongodb
 const authRoute = require('./Routes/auth')
 const courseRoute = require('./Routes/course')
 const roomRoute = require('./Routes/room')
-
+const timetableRoute = require('./Routes/timetable')
 
 //connect the database 
 mongoose.connect(url,{useNewUrlParser : true}) 
@@ -28,6 +28,8 @@ app.use('/api/course',courseRoute)
 //room middlewares
 app.use('/api/room',roomRoute)
 
+//timetable middlewares 
+app.use('/api/timetable',timetableRoute)
 app.listen(8080,()=>{
     console.log("server running on port 8080.....")
 })

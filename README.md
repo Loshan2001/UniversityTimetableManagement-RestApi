@@ -27,3 +27,10 @@
 
 4. faculty can assign staff and resign staff 
             only appropriate faculty can resign staff
+
+5. faculty can create timetable 
+            cannot create timetable same time same day same location 
+            but faculty can create same time same day but different location 
+            
+
+            You can't schedule two events in the same place at the same time on the timetable. But, you can schedule different events at the same time on the same day, as long as they're in different places. Also, once a time is scheduled on the timetable, no other events can be scheduled for that same time.
