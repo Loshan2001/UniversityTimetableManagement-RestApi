@@ -26,6 +26,10 @@ const courseSchema = new mongoose.Schema({
         type : String,
         enum : ['CS' , 'BS' , 'EN'],
         required : true
+    },
+    staff :{
+        type: mongoose.Schema.ObjectId,
+        ref : 'User'
     }
 })
 

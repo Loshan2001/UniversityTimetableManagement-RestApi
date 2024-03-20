@@ -24,3 +24,6 @@
             It specifically looks for two scenarios:
                        => If the existing booking starts before your requested end time and ends after your      requested start time. This means there's an overlap.
                        => If the existing booking starts and ends exactly at the same time as your requested booking. This also indicates an overlap.
+
+4. faculty can assign staff and resign staff 
+            only appropriate faculty can resign staff

@@ -257,5 +257,71 @@ router.get('/:id', verify, async (req, res) => {
     }
 });
 
+router.put('/:courseId/assign-staff',verify,async(req,res)=>{
+    if(req.user.role !== 'faculty') return res.status(403).json({ message: 'Forbidden. Only faculty can assign staff to courses.'});
+
+    const { staffId } = req.body;
+    const { courseId } = req.params; 
+
+    try{
+        // to check course is available or not
+        const courses = await Course.findById(courseId)
+        if (!courses)  return res.status(404).json({ message: 'Course not found' });
+
+        // to check faculty is available or not
+        const staff = await User.findById(staffId)
+        // if (staff.role == NULL )  return res.status(404).json({ message: 'staff not found' });
+        // if (staff.role !== 'staff' )  return res.status(404).json({ message: 'staff not found' });
+        if (!staff || staff.role === null || staff.role !== 'staff') return res.status(404).json({ message: 'Staff not found or invalid role' });
+
+
+        // to check logged in faculty is suitable or not 
+        const faculty = await User.findById(req.user._id)
+        if(faculty.f_Code !==  courses.facultyCode) return res.status(404).json({ message: 'its not your faculty course, you can only assign staff to your faculty course' });
+
+        courses.staff = staff._id 
+        const staffName = await User.findById(staff._id )
+        const course = await courses.save()
+        res.status(200).json({courses, message : ` ${staffName.name} assign to ${course.courseCode} by ${req.user.name} `})
+    }catch(err){
+        console.error(err);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+})
+
+
+router.put('/:courseId/resign-staff', verify, async (req, res) => {
+    if (req.user.role !== 'faculty') return res.status(403).json({ message: 'Forbidden. Only faculty can resign staff from courses.' });
+
+    const { courseId } = req.params;
+
+    try {
+        // Check if the course exists
+        const course = await Course.findById(courseId);
+        if (!course) return res.status(404).json({ message: 'Course not found' });
+
+        // Check if the logged-in faculty is the assigned faculty of the course
+        const faculty = await User.findById(req.user._id);
+        if (faculty.f_Code !== course.facultyCode) return res.status(404).json({ message: 'It\'s not your faculty course, you can only resign staff from your faculty course' });
+
+        // Check if there is any staff assigned to the course
+        if (!course.staff) return res.status(404).json({ message: 'No staff assigned to this course' });
+
+        // Resign the staff from the course
+        const resignedStaff = await User.findById(course.staff);
+
+        // Update the course document to remove the staff assignment
+        course.staff = null;
+        await course.save();
+
+        res.status(200).json({
+            course,
+            message: `${resignedStaff.name} resigned from ${course.courseCode} as assigned by ${req.user.name}`
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
 
 module.exports = router
