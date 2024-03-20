@@ -34,3 +34,10 @@
             
 
             You can't schedule two events in the same place at the same time on the timetable. But, you can schedule different events at the same time on the same day, as long as they're in different places. Also, once a time is scheduled on the timetable, no other events can be scheduled for that same time.
+
+
+6. Student can enroll courses 
+         but student can enroll their registered year courses 
+         student can't enroll or unenroll other student courses
+         faculty [only specific faculty] and admin have permission to unenroll students from courses 
+         
