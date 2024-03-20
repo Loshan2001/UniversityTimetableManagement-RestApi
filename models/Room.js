@@ -3,7 +3,6 @@ const mongoose = require('mongoose')
 const roomSchema = new mongoose.Schema({
     roomCode : {
         type : String,
-        unique : true,
         required : true
     },
     capacity: {
@@ -26,7 +25,7 @@ const roomSchema = new mongoose.Schema({
         endTime: String,
         purpose: String,
         faculty: {
-             type: mongoose.Schema.Types.ObjectId, ref: 'User' 
+             type: mongoose.Schema.Types.ObjectId, ref: 'User'  
             } 
     }]
     
