@@ -155,4 +155,41 @@ router.get('/viewEnrolls/:studentId',verify,async(req,res)=>{
  
 })
 
+//staff view enrolled students using course id 
+router.get('/viewStudent/:courseId',verify,async(req,res)=>{
+    if (req.user.role !== 'staff')  return res.status(401).json({ message: 'Forbidden. Only staff can view enrolled student.' });
+       
+        try{
+            const allcourse = await Course.findOne({staff : req.user._id})
+            const course = await Course.findOne({_id : req.params.courseId})
+
+            //check assigned staff or not
+            if(course.staff.toString() !== req.user._id.toString() ) return res.status(401).json({ message: `Forbidden. ${req.user.name} not assigned for ${course.courseCode}.` });
+    
+            
+            
+            //check courseCode are same or not
+            if(course.courseCode !== allcourse.courseCode) return res.status(401).json({ message: `Forbidden. course doesn't match` });
+
+             // Find all enrollments for the given course code
+             const enrollments = await Enrollment.find({ courseCode: course.courseCode });
+
+            // Extract student names from enrollments
+            const studentNames = enrollments.map(enrollment => enrollment.studentName);
+
+            // Get the total number of students
+            const totalStudents = studentNames.length;
+
+            res.json({
+                totalStudent : totalStudents,
+                 students: studentNames
+                 });
+             
+
+        }catch(err){
+            console.log(err);
+            res.status(500).json({ message: "Internal server error" });
+        }
+})
+
 module.exports = router

@@ -45,4 +45,5 @@
          only admin and faculty view student enrollment 
          student view their enrolled courses using student id, can't view others course 
          
+         staff can view enrolled students using course id 
          
