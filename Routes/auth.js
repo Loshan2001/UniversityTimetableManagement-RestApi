@@ -3,6 +3,7 @@ const User = require('../models/User')
 const bcrypt = require('bcryptjs')
 const dotenv = require('dotenv')
 const jwt = require('jsonwebtoken')
+const cookieParser = require('cookie-parser'); // Import cookie-parser
 dotenv.config()
 const {registerValidation , loginValidation} = require('../Validation/userValidation')
 
@@ -57,7 +58,13 @@ router.post('/login',async(req,res)=>{
 
     //create and assign a tokken 
     const token  = jwt.sign({_id : user._id},process.env.TOKEN_SECRET)
-    res.header('auth-token',token)
+    // Set token in a cookie////////////////////////////////////////////////////////////////////////////////
+    res.cookie('auth-token', token, {
+        httpOnly: true,
+        expires: new Date(Date.now() +  10 * 60 * 1000), // Set expiry time to 10 minutes from now
+    });
+
+   // res.header('auth-token',token)
     res.send("Success! You are logged in");
     
 });

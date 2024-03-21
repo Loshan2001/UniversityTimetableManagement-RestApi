@@ -50,7 +50,7 @@ router.post('/enroll',verify,async(req,res)=>{
  }
 
 
-})
+}) 
 
 //student unenroll
 router.post('/unenroll', verify, async (req, res) => {
@@ -103,7 +103,56 @@ router.post('/unenroll', verify, async (req, res) => {
     }
 })
 
+//admin and faculty view student enrollment 
+router.get('/viewAllenrolls', verify, async (req, res) => {
+     // First validate user role
+     if ( req.user.role !== 'admin' && req.user.role !== 'faculty') 
+     return res.status(401).json({ message: 'Forbidden. Only admin or faculty can unenroll from courses.' });
+ 
+    try{
+            const enrollment = await Enrollment.find()
+            res.json(enrollment)
+        
+    }
+    catch(err){
+        console.log(err);
+        res.status(500).json({ message: "Internal server error" });
+    }
+
+})
 
 
+//student view their enrolled courses using student id 
+router.get('/viewEnrolls/:studentId',verify,async(req,res)=>{
+     // First validate user role
+     if (req.user.role !== 'student' && req.user.role !== 'admin' && req.user.role !== 'faculty') 
+     return res.status(401).json({ message: 'Forbidden. Only student or admin or faculty can view student enrolled courses.' });
+     
+
+     try{
+        if(req.user.role === 'student'){
+            const user = await User.findOne({_id : req.user._id})
+            if (user._id.toString() !== req.params.studentId) 
+                    return res.status(401).json({ message: `Forbidden. Hey ${user.name}!, you can't view  others' enrolled courses.` });
+     
+        }
+
+        const enrollment = await Enrollment.find({student : req.params.studentId})
+         
+            
+          // Check if any enrollments exist for the given student
+          if (enrollment.length === 0) 
+          return res.status(404).json({ message: `No enrollments found` });
+      
+        
+        res.json(enrollment)
+    
+    }
+    catch(err){
+        console.log(err);
+        res.status(500).json({ message: "Internal server error" });
+    }
+ 
+})
 
 module.exports = router

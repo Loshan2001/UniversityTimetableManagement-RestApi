@@ -41,3 +41,8 @@
          student can't enroll or unenroll other student courses
          faculty [only specific faculty] and admin have permission to unenroll students from courses 
          
+
+         only admin and faculty view student enrollment 
+         student view their enrolled courses using student id, can't view others course 
+         
+         

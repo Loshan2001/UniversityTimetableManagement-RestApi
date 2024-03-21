@@ -256,7 +256,7 @@ router.get('/:id', verify, async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
-
+//assign-staff to course
 router.put('/:courseId/assign-staff',verify,async(req,res)=>{
     if(req.user.role !== 'faculty') return res.status(403).json({ message: 'Forbidden. Only faculty can assign staff to courses.'});
 
@@ -268,7 +268,7 @@ router.put('/:courseId/assign-staff',verify,async(req,res)=>{
         const courses = await Course.findById(courseId)
         if (!courses)  return res.status(404).json({ message: 'Course not found' });
 
-        // to check faculty is available or not
+        // to check staff is available or not
         const staff = await User.findById(staffId)
         // if (staff.role == NULL )  return res.status(404).json({ message: 'staff not found' });
         // if (staff.role !== 'staff' )  return res.status(404).json({ message: 'staff not found' });
@@ -278,6 +278,7 @@ router.put('/:courseId/assign-staff',verify,async(req,res)=>{
         // to check logged in faculty is suitable or not 
         const faculty = await User.findById(req.user._id)
         if(faculty.f_Code !==  courses.facultyCode) return res.status(404).json({ message: 'its not your faculty course, you can only assign staff to your faculty course' });
+         
 
         courses.staff = staff._id 
         const staffName = await User.findById(staff._id )
@@ -289,7 +290,7 @@ router.put('/:courseId/assign-staff',verify,async(req,res)=>{
     }
 })
 
-
+//resign-staff to course
 router.put('/:courseId/resign-staff', verify, async (req, res) => {
     if (req.user.role !== 'faculty') return res.status(403).json({ message: 'Forbidden. Only faculty can resign staff from courses.' });
 
@@ -315,7 +316,7 @@ router.put('/:courseId/resign-staff', verify, async (req, res) => {
         await course.save();
 
         res.status(200).json({
-            course,
+         
             message: `${resignedStaff.name} resigned from ${course.courseCode} as assigned by ${req.user.name}`
         });
     } catch (err) {
