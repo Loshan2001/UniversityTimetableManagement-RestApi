@@ -6,6 +6,7 @@ const verify = require('../middleware/verifyToken')
 const Course = require('../models/Course')
 const User = require('../models/User')
 const Room = require('../models/Room')
+const Enrollment = require('../models/Enrollment')
 const {timetableValidation} = require('../Validation/timetableValidation')
 
 router.post('/addTimetable',verify,async(req,res)=>{
@@ -312,8 +313,55 @@ try{
 
 }
  
+})
+//Student view their timetable 
+router.get('/studentTimetables',verify,async(req,res)=>{
+    //validate the student role
+    if (req.user.role !== 'student') return res.status(401).json({ message: 'Forbidden. Only student can view timetables.' });
+
+    try{
+        const studentYear = req.user.year
+        const studentSemester = req.user.semester 
+        const enrollment = await Enrollment.find({student : req.user._id})
+        if(!enrollment) return res.status(401).json({ message: "Forbidden. you didn't enroll any courses yet" });
+        
+        //only view enrolled course timetable 
+        const selectedCoursse = enrollment.map(selected=>selected.courseCode)
+        //console.log(selectedCoursse)
+
+        const timetable = await TimeTable.find({year : studentYear , semester :studentSemester ,courseCode : selectedCoursse})
+        res.json(timetable)
+    }
+    catch(err){
+        console.log(err)
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
 
 })
+
+//staff view their timetable
+
+router.get('/staffTimetables',verify,async(req,res)=>{
+    //validate the student role
+    if (req.user.role !== 'staff') return res.status(401).json({ message: 'Forbidden. Only staff can view timetables.' });
+
+    try{
+
+        const course = await Course.findOne({staff : req.user._id})
+        if(!course) return res.status(401).json({ message: "Forbidden. staff not assign" });
+
+        const timetable = await TimeTable.find({courseCode : course.courseCode})
+
+           res.json(timetable)
+    }
+    catch(err){
+        console.log(err)
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+
+})
+
+
 module.exports  = router
 
  

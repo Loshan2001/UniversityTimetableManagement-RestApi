@@ -130,7 +130,7 @@ router.put('/updateCourse/:id',verify,async(req,res)=>{
   
         //checking if course already in the database 
         const coursecode = await Course.findOne( {courseCode : req.body.courseCode})
-        if (coursecode) return res.status(400).send('Course already exists')
+        if (coursecode) return res.status(400).send("Course already exists")
         
          
         const course = await Course.findById(req.params.id)
@@ -167,7 +167,7 @@ router.put('/updateCourse/:id',verify,async(req,res)=>{
             { message: 'Course updated successfully', course1 }
         )
     }catch(err){
-         
+         console.log(err)
         res.status(500).json({ message: 'Internal Server Error' });
     }
     

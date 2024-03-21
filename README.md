@@ -47,3 +47,6 @@
          
          staff can view enrolled students using course id 
          
+         student view only enrolled course timetable 
+
+         staff view their timetable ony

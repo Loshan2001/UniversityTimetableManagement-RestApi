@@ -160,16 +160,20 @@ router.get('/viewStudent/:courseId',verify,async(req,res)=>{
     if (req.user.role !== 'staff')  return res.status(401).json({ message: 'Forbidden. Only staff can view enrolled student.' });
        
         try{
-            const allcourse = await Course.findOne({staff : req.user._id})
+            const allcourse = await Course.find({staff : req.user._id})
+            const specificCode = allcourse.map(codes => codes.courseCode) 
             const course = await Course.findOne({_id : req.params.courseId})
 
             //check assigned staff or not
             if(course.staff.toString() !== req.user._id.toString() ) return res.status(401).json({ message: `Forbidden. ${req.user.name} not assigned for ${course.courseCode}.` });
     
+
+           
+            // console.log( course.courseCode)
+            // console.log(specificCode)
             
-            
-            //check courseCode are same or not
-            if(course.courseCode !== allcourse.courseCode) return res.status(401).json({ message: `Forbidden. course doesn't match` });
+            //check courseCode are same or not or include any same course
+            if(!specificCode.includes(course.courseCode)) return res.status(401).json({ message: `Forbidden. course doesn't match` });
 
              // Find all enrollments for the given course code
              const enrollments = await Enrollment.find({ courseCode: course.courseCode });
