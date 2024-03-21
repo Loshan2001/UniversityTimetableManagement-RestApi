@@ -4,7 +4,7 @@ const verify = require('../middleware/verifyToken')
 const Room = require('../models/Room')
 const TimeTable = require('../models/Timetable')
 const {roomReservationValidation} = require("../Validation/roomValidation")
-
+const Notification = require('../models/Notification')
 router.post('/reserve', verify, async (req, res) => {
     // First validate faculty
     if (req.user.role !== 'faculty') return res.status(401).json({ message: 'Forbidden. Only Faculty can reserve rooms.' });
@@ -89,7 +89,19 @@ router.post('/reserve', verify, async (req, res) => {
         });
 
         const savedRoom = await room.save();
-        res.status(201).json(savedRoom);
+        
+        //sent notification
+        const message = `${req.user.f_Code} student have a ${booking.purpose} on ${ booking.date} at ${startTime} in ${req.body.roomCode}`
+        const notification = new Notification({
+            recipient : req.user.id,
+            sender : req.user.email,
+            message : message
+
+
+        })
+        
+        await notification.save()
+        res.status(201).json({savedRoom , message : `notification sent ${req.user.f_Code} faculty students`});
     } catch (err) {
         console.log(err);
         res.status(500).json({ message: "Internal server error" });
@@ -119,10 +131,21 @@ router.delete('/unreserve/:roomId', verify, async (req, res) => {
             return res.status(403).json({ message: 'You are not authorized to unreserve this room' });
         }
 
+        //sent notification
+        const message = `${req.user.f_Code} cancel the ${room.bookings[0].purpose} on ${ room.bookings[0].date} at ${room.bookings[0].startTime} in ${room.roomCode}`
+        const notification = new Notification({
+            recipient : req.user.id,
+            sender : req.user.email,
+            message : message
+
+
+        })
+        
+        await notification.save()
         // Remove the room booking
         await Room.findByIdAndDelete(req.params.roomId);
 
-        res.status(200).json({ message: 'Room unreserved successfully' });
+        res.status(200).json({ message: `Room unreserved successfully and notification sent ${req.user.f_Code} faculty students` });
     } catch (err) {
         console.log(err);
         res.status(500).json({ message: 'Internal server error' });

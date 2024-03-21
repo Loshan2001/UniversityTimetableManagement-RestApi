@@ -49,4 +49,8 @@
          
          student view only enrolled course timetable 
 
-         staff view their timetable ony
+         staff view their timetable only
+
+5. manage notification
+         students will be notified, when faculty reserve or unreserve room
+         only student can view notifications

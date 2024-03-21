@@ -1,31 +1,15 @@
 
 const mongoose = require('mongoose')
 const notificationSchema = mongoose.Schema({
-    courseCode : {
+    recipient : {
         type : mongoose.SchemaTypes.ObjectId,
         required : true,
     },
-    description :{
+    sender : {
         type : String,
         required : true
     },
-    year : {
-        type : String,
-        required : true
-    },
-    semester : {
-        type : String,
-        required : true
-    },
-    venue :{
-        type : String,
-        required : true
-    },
-    date : {
-        type : Date,
-        required : true
-    },
-    time : {
+    message :{
         type : String,
         required : true
     }

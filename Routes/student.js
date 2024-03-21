@@ -3,7 +3,7 @@ const Enrollment = require('../models/Enrollment')
 const User = require('../models/User')
 const Course = require('../models/Course')
 const verify = require('../middleware/verifyToken')
-
+const Notification = require('../models/Notification')
 //student enroll
 router.post('/enroll',verify,async(req,res)=>{
     // First validate student
@@ -195,5 +195,21 @@ router.get('/viewStudent/:courseId',verify,async(req,res)=>{
             res.status(500).json({ message: "Internal server error" });
         }
 })
+
+//student view notifications 
+
+router.get('/viewNotification',verify,async(req,res)=>{
+    if (req.user.role !== 'student')  return res.status(401).json({ message: 'Forbidden. Only student can view notification.' });
+
+    try{
+
+        const notification = await Notification.find()
+        res.json(notification)
+    }catch{
+        res.status(500).json({ message: "Internal server error" });
+    }
+
+})
+
 
 module.exports = router

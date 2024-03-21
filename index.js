@@ -9,7 +9,7 @@ const courseRoute = require('./Routes/course')
 const roomRoute = require('./Routes/room')
 const timetableRoute = require('./Routes/timetable')
 const studentEnrollmentRoute = require('./Routes/student')
-
+ 
 //connect the database 
 mongoose.connect(url,{useNewUrlParser : true}) 
 const con = mongoose.connection 
@@ -36,6 +36,8 @@ app.use('/api/timetable',timetableRoute)
 
 //studentEnrollment middlewares
 app.use('/api/student',studentEnrollmentRoute)
+
+ 
 app.listen(8080,()=>{
     console.log("server running on port 8080.....")
 })

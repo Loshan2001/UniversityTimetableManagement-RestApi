@@ -8,7 +8,6 @@ const User = require('../models/User')
 const Room = require('../models/Room')
 const Enrollment = require('../models/Enrollment')
 const {timetableValidation} = require('../Validation/timetableValidation')
-
 router.post('/addTimetable',verify,async(req,res)=>{
      // First validate faculty
      if (req.user.role !== 'faculty') return res.status(401).json({ message: 'Forbidden. Only Faculty can create timetables.' });
@@ -112,6 +111,8 @@ try{
     });
 
     const createTimetable = await timeTable.save();
+
+   
     res.status(201).json(createTimetable);
 
 
