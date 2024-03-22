@@ -1,6 +1,27 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/MhkFIDKy)
 
 
+
+
+
+Unit Testing for Registration 
+      i use jest for unit testing 
+
+   path : __tests__/contoller/auth.test.js 
+
+  1.   check user register enter invalid inputs(name,password,email,role)
+  2.   check user register enter  valid inputs(name,password,email,role)
+  3.   when you user already registered it should send status code of 400  
+
+
+
+
+
+
+
+
+
+
 1. admin can create course and assign appropriate faculty to course 
                 1.1 course verificaton => to check already course available or not
                 1.2 assign appropriate faculty => to check faculty f_Code and courseCode's first two letters 
