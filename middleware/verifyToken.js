@@ -5,7 +5,7 @@ module.exports = async function (req,res,next){
    // const token  = req.header('auth-token')
     // Check if the auth-token cookie is present///////////////////////////////////////////////////////
     const token = req.cookies['auth-token'];
-    if(!token) return res.status(401).send('Access denied')
+    if(!token) return res.status(401).send('Access denied, login again')
 
     try{
         const verified = jwt.verify(token, process.env.TOKEN_SECRET)

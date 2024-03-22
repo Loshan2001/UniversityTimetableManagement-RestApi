@@ -291,7 +291,7 @@ try{
     timetable.year = req.body.year;
     timetable.semester = req.body.semester;
     timetable.staff = users.name;
-    timetable.description [
+    timetable.description = [
         {
             date : date,
             startTime:startTime,

@@ -145,7 +145,7 @@ router.put('/updateCourse/:id',verify,async(req,res)=>{
         try{
            
    
-        const courseCode =req.body.courseCode
+       // const courseCode =req.body.courseCode
         const courseName = req.body.courseName
         const description = req.body.description
         const credits = req.body.credits
@@ -154,7 +154,7 @@ router.put('/updateCourse/:id',verify,async(req,res)=>{
         
      
 
-           course.courseCode = courseCode
+          // course.courseCode = courseCode
            course.courseName = courseName
            course.description = description 
            course.credits = credits

@@ -26,11 +26,12 @@ const timeTableSchema = mongoose.Schema({
         facultyCode: {
              type: String 
             } 
+        
     }],
     staff : {
         type : String,
         ref: 'User'
     }
-})
+}) // Prevent Mongoose from auto-generating _id for description subdocuments
 
 module.exports = mongoose.model("TimeTable",timeTableSchema)
