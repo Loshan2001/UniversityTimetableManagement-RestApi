@@ -7,13 +7,20 @@ TOKEN_SECRET = lksldklskdlskerojvdnc
 Unit Testing for Registration 
       i use jest for unit testing 
 
+   to run the test : npm test
    path : __tests__/contoller/auth.test.js 
 
-  1.   check user register enter invalid inputs(name,password,email,role)
-  2.   check user register enter  valid inputs(name,password,email,role)
-  3.   when you user already registered it should send status code of 400  
+   1. registerValidation function
 
+    ✓ should return error if input is invalid 
+    ✓ should return undefined error if input is valid 
 
+   2. Registration Controller
+    ✓ should send status code of 400 when Email exists 
+
+   
+
+to run the server : npm start
 
 User Routes 
 
